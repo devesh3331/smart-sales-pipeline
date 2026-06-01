@@ -1,0 +1,5 @@
+Quality Report — 2026-06-01 23:14:17.151307
+Total records: 118434
+
+FAILURES:
+  → Duplicate order_ids: 18993

@@ -1,0 +1,4 @@
+Quality Report — 2026-06-01 23:12:12.141502
+Total records: 118434
+
+FAILURES:

@@ -1,9 +1,17 @@
+import os
+os.environ["HADOOP_HOME"] = "C:\\hadoop"
+os.environ["PATH"] = os.environ["PATH"] + ";C:\\hadoop\\bin"
+import os
+os.makedirs("data/processed", exist_ok=True)
+
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
     col, sum, count, avg, round, to_date,
     datediff, when, year, month
 )
-
+import os
+os.environ["HADOOP_HOME"] = "C:\\hadoop"
+os.environ["PATH"] = os.environ["PATH"] + ";C:\\hadoop\\bin"
 # ── Spark session ──────────────────────────────────────────
 spark = SparkSession.builder \
     .appName("SmartSalesPipeline-Transform") \
@@ -102,9 +110,20 @@ monthly_trend.show()
 import os
 os.makedirs("data/processed", exist_ok=True)
 
-full.write.mode("overwrite").parquet("data/processed/fact_orders/")
-daily_revenue.write.mode("overwrite").parquet("data/processed/daily_revenue/")
-category_revenue.write.mode("overwrite").parquet("data/processed/category_revenue/")
+# full.write.mode("overwrite").parquet("data/processed/fact_orders/")
+# daily_revenue.write.mode("overwrite").parquet("data/processed/daily_revenue/")
+# category_revenue.write.mode("overwrite").parquet("data/processed/category_revenue/")
 
-print("\n✓ Processed data saved to data/processed/ as Parquet")
+import os
+os.makedirs("data/processed", exist_ok=True)
+
+# Save as CSV — works perfectly on Windows without Hadoop setup
+full.toPandas().to_csv("data/processed/fact_orders.csv", index=False)
+daily_revenue.toPandas().to_csv("data/processed/daily_revenue.csv", index=False)
+category_revenue.toPandas().to_csv("data/processed/category_revenue.csv", index=False)
+delivery_by_state.toPandas().to_csv("data/processed/delivery_by_state.csv", index=False)
+monthly_trend.toPandas().to_csv("data/processed/monthly_trend.csv", index=False)
+
+print("\n✓ Processed data saved to data/processed/ as CSV")
 print("Day 2 complete ✓")
+
