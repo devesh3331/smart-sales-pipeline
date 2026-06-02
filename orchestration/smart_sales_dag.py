@@ -1,6 +1,6 @@
 from airflow import DAG
-from airflow.operators.python import PythonOperator
-from airflow.operators.bash import BashOperator
+from airflow.providers.standard.operators.python import PythonOperator
+from airflow.providers.standard.operators.bash import BashOperator
 from datetime import datetime, timedelta
 import pandas as pd
 import os
@@ -28,19 +28,36 @@ dag = DAG(
 )
 
 # ── Task functions ─────────────────────────────────────────
-PROJECT_PATH = r"C:\Users\deves\Projects\smart-sales-pipeline"
+# PROJECT_PATH = r"C:\Users\deves\Projects\smart-sales-pipeline"
+PROJECT_PATH = "/usr/local/airflow"
+
+# def task_ingestion():
+#     print("Starting ingestion...")
+#     raw_path = os.path.join(PROJECT_PATH, "data", "raw")
+#     landing_path = os.path.join(PROJECT_PATH, "data", "landing")
+#     os.makedirs(landing_path, exist_ok=True)
+
+#     files = [f for f in os.listdir(raw_path) if f.endswith(".csv")]
+#     for file in files:
+#         src = os.path.join(raw_path, file)
+#         dst = os.path.join(landing_path, file)
+#         import shutil
+#         shutil.copy(src, dst)
+#         print(f"Ingested: {file}")
+
+#     print(f"Ingestion complete. {len(files)} files processed.")
 
 def task_ingestion():
     print("Starting ingestion...")
-    raw_path = os.path.join(PROJECT_PATH, "data", "raw")
-    landing_path = os.path.join(PROJECT_PATH, "data", "landing")
+    raw_path = os.path.join(PROJECT_PATH, "dags", "data", "raw")
+    landing_path = os.path.join(PROJECT_PATH, "dags", "data", "landing")
     os.makedirs(landing_path, exist_ok=True)
 
+    import shutil
     files = [f for f in os.listdir(raw_path) if f.endswith(".csv")]
     for file in files:
         src = os.path.join(raw_path, file)
         dst = os.path.join(landing_path, file)
-        import shutil
         shutil.copy(src, dst)
         print(f"Ingested: {file}")
 
